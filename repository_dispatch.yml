@@ -1,0 +1,28 @@
+name: Repository Dispatch
+on:
+  repository_dispatch:
+    types: [artifact-creation]
+jobs:
+  myEvent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.client_payload.ref }}
+      - name: Get suite ID
+        id: get_suite_id
+        run: |
+          URL="https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.client_payload.run_id }}"
+          suite_id=$(curl -s -u admin:${{ secrets.GITHUB_TOKEN }} $URL | jq -r '.check_suite_url' | awk -F "/" '{print $NF}')
+          echo $check_suite_id
+          echo "::set-output name=suite_id::$suite_id"
+      - name: Get artifact ID
+        id: get_artifact_id
+        run: |
+          URL="https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.client_payload.checkrunid }}/artifacts"
+          artifact_id=$(curl -s -u admin:${{ secrets.GITHUB_TOKEN }} $URL | jq '.artifacts[].id')
+          echo $artifact_id
+          echo "::set-output name=artifact_id::$artifact_id"
+      - name: Print URL
+        run: |
+          echo https://github.com/${{ github.repository }}/suites/${{ steps.get_suite_id.outputs.suite_id }}/artifacts/${{ steps.get_artifact_id.outputs.artifact_id }}
