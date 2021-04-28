@@ -18,9 +18,9 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         path: path/to/artifact/world.txt
-    - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          event-type: artifact-creation
-          client-payload: '{"ref": "${{ github.ref }}", "run_id": "${{ github.run_id }}"}'
+    - name: Trigger repository dispatch
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        event-type: artifact-creation
+        client-payload: '{"ref": "${{ github.ref }}", "run_id": "${{ github.run_id }}"}'
