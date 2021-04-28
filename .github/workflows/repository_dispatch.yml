@@ -16,12 +16,12 @@ jobs:
         run: |
           URL="https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.client_payload.run_id }}"
           suite_id=$(curl -s -u admin:${{ secrets.GITHUB_TOKEN }} $URL | jq -r '.check_suite_url' | awk -F "/" '{print $NF}')
-          echo $check_suite_id
+          echo $suite_id
           echo "::set-output name=suite_id::$suite_id"
       - name: Get artifact ID
         id: get_artifact_id
         run: |
-          URL="https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.client_payload.checkrunid }}/artifacts"
+          URL="https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.client_payload.run_id }}/artifacts"
           artifact_id=$(curl -s -u admin:${{ secrets.GITHUB_TOKEN }} $URL | jq '.artifacts[].id')
           echo $artifact_id
           echo "::set-output name=artifact_id::$artifact_id"
