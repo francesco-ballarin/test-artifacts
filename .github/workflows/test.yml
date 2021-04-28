@@ -1,3 +1,5 @@
+name: CI
+
 on:
   push:
     branches:
@@ -8,7 +10,6 @@ on:
 
 jobs:
   upload:
-    name: Upload
     steps:
     - uses: actions/checkout@v2
     - run: mkdir -p path/to/artifact
