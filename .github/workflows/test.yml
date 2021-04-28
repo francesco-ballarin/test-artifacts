@@ -21,6 +21,6 @@ jobs:
     - name: Trigger repository dispatch
       uses: peter-evans/repository-dispatch@v1
       with:
+        token: ${{ secrets.PAT1 }}
         event-type: artifact-creation
         client-payload: '{"ref": "${{ github.ref }}", "run_id": "${{ github.run_id }}"}'
-        token: ${{ secrets.REPO_ACCESS_TOKEN }}
