@@ -17,6 +17,7 @@ jobs:
     - run: echo hello > path/to/artifact/world.txt
     - uses: actions/upload-artifact@v2
       with:
+        name: "Artifact name with spaces "
         path: path/to/artifact/world.txt
     - name: Trigger repository dispatch
       uses: peter-evans/repository-dispatch@v1
